@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -24,11 +25,6 @@ func getCpuNum(dockerdata string) {
 			cpuNum = 1
 		}
 	}
-}
-
-func getTag() string {
-	//FIXMI:some other message for container
-	return ""
 }
 
 func getMemLimit(str string) string {
@@ -115,6 +111,11 @@ func getEndPoint(DockerData string) string {
 	hostname := strings.Split(buf[1], "	")[0]
 	hostname = strings.Replace(hostname, "\n", " ", -1)
 	return hostname
+}
+
+func getTag(DockerData string) string {
+	service := getBetween(DockerData, `"service=`, `",`)
+	return fmt.Sprintf("service=%s", service)
 }
 
 func getDockerData(containerId string) (string, error) {
