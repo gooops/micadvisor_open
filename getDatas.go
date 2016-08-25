@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
@@ -34,15 +33,15 @@ func getTag(dockerData string) string {
 	if err != nil {
 		log.Println(err)
 	}
+	var tags []string
 	if value, ok := inspect.Config.Labels.(map[string]interface{}); ok {
-		var tags []string
 		for k, v := range value {
 			if s, ok := v.(string); ok {
 				tags = append(tags[:], k+"="+s)
 			}
 		}
-		return strings.Join(tags, ",")
 	}
+	return strings.Join(tags, ",")
 }
 
 func getMemLimit(str string) string {
@@ -133,11 +132,6 @@ func getContainerId(cadvisorData string) string {
 func getEndPoint(DockerData string) string {
 	hostname := getBetween(DockerData, `"Id":"`, `",`)
 	return hostname
-}
-
-func getTag(DockerData string) string {
-	service := getBetween(DockerData, `"service=`, `",`)
-	return fmt.Sprintf("service=%s", service)
 }
 
 func getDockerData(containerId string) (string, error) {
