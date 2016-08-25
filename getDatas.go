@@ -1,16 +1,13 @@
 package main
 
 import (
-	"bufio"
 	"errors"
-	"io"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -104,33 +101,37 @@ func getContainerId(cadvisorData string) string {
 	return containerId
 }
 
-func getEndPoint(DockerData string) string {
-	//get endpoint from env first
-	endPoint := getBetween(DockerData, `"EndPoint=`, `",`)
-	if endPoint != "" {
-		return endPoint
-	}
-	filepath := getBetween(DockerData, `"HostsPath":"`, `",`)
-	buf := make(map[int]string, 6)
-	inputFile, inputError := os.Open(filepath)
-	if inputError != nil {
-		LogErr(inputError, "getEndPoint open file err"+filepath)
-		return ""
-	}
-	defer inputFile.Close()
+// func getEndPoint(DockerData string) string {
+// 	//get endpoint from env first
+// 	endPoint := getBetween(DockerData, `"EndPoint=`, `",`)
+// 	if endPoint != "" {
+// 		return endPoint
+// 	}
+// 	filepath := getBetween(DockerData, `"HostsPath":"`, `",`)
+// 	buf := make(map[int]string, 6)
+// 	inputFile, inputError := os.Open(filepath)
+// 	if inputError != nil {
+// 		LogErr(inputError, "getEndPoint open file err"+filepath)
+// 		return ""
+// 	}
+// 	defer inputFile.Close()
 
-	inputReader := bufio.NewReader(inputFile)
-	lineCounter := 0
-	for i := 0; i < 2; i++ {
-		inputString, readerError := inputReader.ReadString('\n')
-		if readerError == io.EOF {
-			break
-		}
-		lineCounter++
-		buf[lineCounter] = inputString
-	}
-	hostname := strings.Split(buf[1], "	")[0]
-	hostname = strings.Replace(hostname, "\n", " ", -1)
+// 	inputReader := bufio.NewReader(inputFile)
+// 	lineCounter := 0
+// 	for i := 0; i < 2; i++ {
+// 		inputString, readerError := inputReader.ReadString('\n')
+// 		if readerError == io.EOF {
+// 			break
+// 		}
+// 		lineCounter++
+// 		buf[lineCounter] = inputString
+// 	}
+// 	hostname := strings.Split(buf[1], "	")[0]
+// 	hostname = strings.Replace(hostname, "\n", " ", -1)
+// 	return hostname
+// }
+func getEndPoint(DockerData string) string {
+	hostname := getBetween(DockerData, `"Id":"`, `",`)
 	return hostname
 }
 
