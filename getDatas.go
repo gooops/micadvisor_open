@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -13,6 +14,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/gooops/micadvisor_open/dockerinspect"
 )
 
 func getCpuNum(dockerdata string) {
@@ -26,9 +29,23 @@ func getCpuNum(dockerdata string) {
 	}
 }
 
-func getTag() string {
-	//FIXMI:some other message for container
-	return ""
+func getTag(dockerData string) string {
+	// //FIXMI:some other message for container
+	// return ""
+	inspect := dockerinspect.Inspect{}
+	err := inspect.UnmarshalJSON([]byte(strings.Trim(strings.Trim(dockerData, "["), "]")))
+	if err != nil {
+		log.Println(err)
+	}
+	if value, ok := inspect.Config.Labels.(map[string]interface{}); ok {
+		var tags []string
+		for k, v := range value {
+			if s, ok := v.(string); ok {
+				tags = append(tags[:], k+"="+s)
+			}
+		}
+		return strings.Join(tags, ",")
+	}
 }
 
 func getMemLimit(str string) string {
