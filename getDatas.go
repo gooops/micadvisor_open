@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
@@ -25,7 +26,6 @@ func getCpuNum(dockerdata string) {
 		}
 	}
 }
-
 func getTag(dockerData string) string {
 	// //FIXMI:some other message for container
 	// return ""
@@ -133,6 +133,11 @@ func getContainerId(cadvisorData string) string {
 func getEndPoint(DockerData string) string {
 	hostname := getBetween(DockerData, `"Id":"`, `",`)
 	return hostname
+}
+
+func getTag(DockerData string) string {
+	service := getBetween(DockerData, `"service=`, `",`)
+	return fmt.Sprintf("service=%s", service)
 }
 
 func getDockerData(containerId string) (string, error) {
