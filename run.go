@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gooops/micadvisor_open/dockerinspect"
+
 )
 
 var Interval time.Duration //检测时间间隔
-var Inspect = dockerinspect.Inspect{}
+
 
 func main() {
 	tmp := os.Getenv("Interval")
