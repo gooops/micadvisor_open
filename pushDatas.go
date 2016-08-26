@@ -13,7 +13,7 @@ import (
 var (
 	cpuNum   int64
 	countNum int
-	Inspect  = dockerinspect.Inspect{}
+	inspect  = dockerinspect.Inspect{}
 )
 
 func pushData() {
@@ -34,7 +34,7 @@ func pushData() {
 		containerId := getContainerId(cadvDataForOneContainer[k]) //cadvisor provide the containerId
 
 		DockerData, _ := getDockerData(containerId) //get container inspect
-		err := Inspect.UnmarshalJSON([]byte(strings.Trim(strings.Trim(DockerData, "["), "]")))
+		err := inspect.UnmarshalJSON([]byte(strings.Trim(strings.Trim(DockerData, "["), "]")))
 		if err != nil {
 			log.Println(err)
 		}

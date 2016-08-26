@@ -26,7 +26,7 @@ func getTag() string {
 	// //FIXMI:some other message for container
 	// return ""
 	var tags []string
-	if value, ok := Inspect.Config.Labels.(map[string]interface{}); ok {
+	if value, ok := inspect.Config.Labels.(map[string]interface{}); ok {
 		for k, v := range value {
 			if s, ok := v.(string); ok {
 				tags = append(tags[:], k+"="+s)
@@ -124,7 +124,7 @@ func getContainerId(cadvisorData string) string {
 func getEndPoint() string {
 	// hostname := getBetween(DockerData, `"Id":"`, `",`)
 	// return hostname
-	return strings.TrimLeft(Inspect.Name, "/")
+	return strings.TrimLeft(inspect.Name, "/")
 }
 
 func getDockerData(containerId string) (string, error) {
