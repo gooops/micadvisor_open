@@ -8,5 +8,6 @@ type InspectConfig struct {
 type Inspect struct {
 	Id      string
 	Created string
+	Name    string
 	Config  *InspectConfig
 }

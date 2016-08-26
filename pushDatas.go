@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -30,12 +31,15 @@ func pushData() {
 		containerId := getContainerId(cadvDataForOneContainer[k]) //cadvisor provide the containerId
 
 		DockerData, _ := getDockerData(containerId) //get container inspect
-
-		endpoint := getEndPoint(DockerData) //there is the hosts file path in the inpect of container
+		err := inspect.UnmarshalJSON([]byte(strings.Trim(strings.Trim(DockerData, "["), "]")))
+		if err != nil {
+			log.Println(err)
+		}
+		endpoint := getEndPoint() //there is the hosts file path in the inpect of container
 
 		getCpuNum(DockerData) //we need to give the container CPU ENV
 
-		tag := getTag(DockerData) //recode some other message for a container
+		tag := getTag() //recode some other message for a container
 
 		ausge, busge := getUsageData(cadvDataForOneContainer[k]) //get 2 usage because some metric recoding Incremental metric
 

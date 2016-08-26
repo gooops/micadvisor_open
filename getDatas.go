@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"io/ioutil"
-	"log"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -11,8 +10,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/gooops/micadvisor_open/dockerinspect"
 )
 
 func getCpuNum(dockerdata string) {
@@ -25,14 +22,9 @@ func getCpuNum(dockerdata string) {
 		}
 	}
 }
-func getTag(dockerData string) string {
+func getTag() string {
 	// //FIXMI:some other message for container
 	// return ""
-	inspect := dockerinspect.Inspect{}
-	err := inspect.UnmarshalJSON([]byte(strings.Trim(strings.Trim(dockerData, "["), "]")))
-	if err != nil {
-		log.Println(err)
-	}
 	var tags []string
 	if value, ok := inspect.Config.Labels.(map[string]interface{}); ok {
 		for k, v := range value {
@@ -129,9 +121,10 @@ func getContainerId(cadvisorData string) string {
 // 	hostname = strings.Replace(hostname, "\n", " ", -1)
 // 	return hostname
 // }
-func getEndPoint(DockerData string) string {
-	hostname := getBetween(DockerData, `"Id":"`, `",`)
-	return hostname
+func getEndPoint() string {
+	// hostname := getBetween(DockerData, `"Id":"`, `",`)
+	// return hostname
+	return strings.TrimLeft(inspect.Name, "/")
 }
 
 func getDockerData(containerId string) (string, error) {

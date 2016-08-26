@@ -29,6 +29,8 @@ func easyjson_f525986a_decode_github_com_gooops_micadvisor_open_dockerinspect_In
 			out.Id = string(in.String())
 		case "Created":
 			out.Created = string(in.String())
+		case "Name":
+			out.Name = string(in.String())
 		case "Config":
 			if in.IsNull() {
 				in.Skip()
@@ -60,6 +62,12 @@ func easyjson_f525986a_encode_github_com_gooops_micadvisor_open_dockerinspect_In
 	first = false
 	out.RawString("\"Created\":")
 	out.String(string(in.Created))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"Name\":")
+	out.String(string(in.Name))
 	if !first {
 		out.RawByte(',')
 	}
