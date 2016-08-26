@@ -126,7 +126,8 @@ func getContainerId(cadvisorData string) string {
 func getEndPoint(inspect dockerinspect.Inspect) string {
 	// hostname := getBetween(DockerData, `"Id":"`, `",`)
 	// return hostname
-	return strings.TrimLeft(inspect.Name, "/")
+	// return strings.TrimLeft(inspect.Name, "/")
+	return inspect.Id
 }
 
 func getDockerData(containerId string) (string, error) {
