@@ -11,7 +11,7 @@ import (
 )
 
 var Interval time.Duration //检测时间间隔
-var inspect = dockerinspect.Inspect{}
+var Inspect = dockerinspect.Inspect{}
 
 func main() {
 	tmp := os.Getenv("Interval")

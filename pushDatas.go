@@ -31,7 +31,7 @@ func pushData() {
 		containerId := getContainerId(cadvDataForOneContainer[k]) //cadvisor provide the containerId
 
 		DockerData, _ := getDockerData(containerId) //get container inspect
-		err := inspect.UnmarshalJSON([]byte(strings.Trim(strings.Trim(DockerData, "["), "]")))
+		err := Inspect.UnmarshalJSON([]byte(strings.Trim(strings.Trim(DockerData, "["), "]")))
 		if err != nil {
 			log.Println(err)
 		}
