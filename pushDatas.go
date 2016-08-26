@@ -13,7 +13,6 @@ import (
 var (
 	cpuNum   int64
 	countNum int
-	inspect  = dockerinspect.Inspect{}
 )
 
 func pushData() {
@@ -32,17 +31,17 @@ func pushData() {
 		memLimit := getMemLimit(cadvDataForOneContainer[k]) //cadvisor provide the memlimit
 
 		containerId := getContainerId(cadvDataForOneContainer[k]) //cadvisor provide the containerId
-
+		inspect := dockerinspect.Inspect{}
 		DockerData, _ := getDockerData(containerId) //get container inspect
 		err := inspect.UnmarshalJSON([]byte(strings.Trim(strings.Trim(DockerData, "["), "]")))
 		if err != nil {
 			log.Println(err)
 		}
-		endpoint := getEndPoint() //there is the hosts file path in the inpect of container
+		endpoint := getEndPoint(inspect) //there is the hosts file path in the inpect of container
 
 		getCpuNum(DockerData) //we need to give the container CPU ENV
 
-		tag := getTag() //recode some other message for a container
+		tag := getTag(inspect) //recode some other message for a container
 
 		ausge, busge := getUsageData(cadvDataForOneContainer[k]) //get 2 usage because some metric recoding Incremental metric
 

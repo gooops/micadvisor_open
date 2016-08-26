@@ -10,6 +10,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/gooops/micadvisor_open/dockerinspect"
 )
 
 func getCpuNum(dockerdata string) {
@@ -22,7 +24,7 @@ func getCpuNum(dockerdata string) {
 		}
 	}
 }
-func getTag() string {
+func getTag(inspect dockerinspect.Inspect) string {
 	// //FIXMI:some other message for container
 	// return ""
 	var tags []string
@@ -121,7 +123,7 @@ func getContainerId(cadvisorData string) string {
 // 	hostname = strings.Replace(hostname, "\n", " ", -1)
 // 	return hostname
 // }
-func getEndPoint() string {
+func getEndPoint(inspect dockerinspect.Inspect) string {
 	// hostname := getBetween(DockerData, `"Id":"`, `",`)
 	// return hostname
 	return strings.TrimLeft(inspect.Name, "/")
