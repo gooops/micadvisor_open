@@ -31,11 +31,17 @@ func getTag(inspect dockerinspect.Inspect) string {
 	if value, ok := inspect.Config.Labels.(map[string]interface{}); ok {
 		for k, v := range value {
 			if s, ok := v.(string); ok {
-				tags = append(tags[:], k+"="+s)
+				if strings.HasPrefix(k,"LP"){
+					tags = append(tags[:], k+"="+s)
+				}
 			}
 		}
 	}
+	//return strings.Replace(strings.Replace(strings.Join(tags, ","), ".", "#", -1), "_", "#", -1)
+	//return strings.Replace(strings.Replace(strings.Join(tags, ","), ",", "#", -1), " ", "#", -1)
 	return strings.Join(tags, ",")
+	//return "io.kubernetes.container.restartCount=0,io.kubernetes.pod.namespace=default"
+	//return "LPtype=tomcat,LPproject=ins-e-platform"
 }
 
 func getMemLimit(str string) string {
@@ -125,7 +131,9 @@ func getContainerId(cadvisorData string) string {
 // }
 func getEndPoint(inspect dockerinspect.Inspect) string {
 	return strings.Trim(strings.TrimLeft(inspect.Name, "/"), "-")
-	// return inspect.Id
+	//return strings.Replace(strings.Replace(strings.Replace(strings.TrimLeft(inspect.Name, "/"), "-", "", -1),".","", -1),"_","",-1)
+	//return strings.Replace(strings.Replace(strings.Replace(strings.TrimLeft(inspect.Name, "/"), "-", "", -1),".","", -1),"_","",-1)[:3]
+	 //return inspect.Id
 }
 
 func getDockerData(containerId string) (string, error) {
