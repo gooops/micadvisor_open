@@ -130,7 +130,14 @@ func getContainerId(cadvisorData string) string {
 // 	return hostname
 // }
 func getEndPoint(inspect dockerinspect.Inspect) string {
-	return strings.Trim(strings.TrimLeft(inspect.Name, "/"), "-")
+	conn, err := net.Dial("udp", "google.com:80")
+    	if err != nil {
+    	//fmt.Println(err.Error())
+    	return ""
+    	}
+    	defer conn.Close()
+    	ipAddr := (strings.Split(conn.LocalAddr().String(), ":")[0])
+	return ipAddr + "-" + strings.Trim(strings.TrimLeft(inspect.Name, "/"), "-")
 	//return strings.Replace(strings.Replace(strings.Replace(strings.TrimLeft(inspect.Name, "/"), "-", "", -1),".","", -1),"_","",-1)
 	//return strings.Replace(strings.Replace(strings.Replace(strings.TrimLeft(inspect.Name, "/"), "-", "", -1),".","", -1),"_","",-1)[:3]
 	 //return inspect.Id
