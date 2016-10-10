@@ -133,7 +133,7 @@ func getContainerId(cadvisorData string) string {
 func getEndPoint(inspect dockerinspect.Inspect) string {
 	hostname, _ := os.Hostname()
 	localip, _ := net.LookupIP(hostname)
-    	ipAddr := localip[0]
+	ipAddr := localip[0].String()
 	return string(ipAddr) + "-" + strings.Trim(strings.TrimLeft(inspect.Name, "/"), "-")
 	//return strings.Replace(strings.Replace(strings.Replace(strings.TrimLeft(inspect.Name, "/"), "-", "", -1),".","", -1),"_","",-1)
 	//return strings.Replace(strings.Replace(strings.Replace(strings.TrimLeft(inspect.Name, "/"), "-", "", -1),".","", -1),"_","",-1)[:3]
