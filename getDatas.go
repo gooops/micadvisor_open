@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"os"
 
 	"github.com/gooops/micadvisor_open/dockerinspect"
 )
@@ -130,14 +131,10 @@ func getContainerId(cadvisorData string) string {
 // 	return hostname
 // }
 func getEndPoint(inspect dockerinspect.Inspect) string {
-	conn, err := net.Dial("udp", "google.com:80")
-    	if err != nil {
-    	//fmt.Println(err.Error())
-    	return ""
-    	}
-    	defer conn.Close()
-    	ipAddr := (strings.Split(conn.LocalAddr().String(), ":")[0])
-	return ipAddr + "-" + strings.Trim(strings.TrimLeft(inspect.Name, "/"), "-")
+	hostname, _ := os.Hostname()
+	localip, _ := net.LookupIP(hostname)
+    	ipAddr := localip[0]
+	return string(ipAddr) + "-" + strings.Trim(strings.TrimLeft(inspect.Name, "/"), "-")
 	//return strings.Replace(strings.Replace(strings.Replace(strings.TrimLeft(inspect.Name, "/"), "-", "", -1),".","", -1),"_","",-1)
 	//return strings.Replace(strings.Replace(strings.Replace(strings.TrimLeft(inspect.Name, "/"), "-", "", -1),".","", -1),"_","",-1)[:3]
 	 //return inspect.Id
