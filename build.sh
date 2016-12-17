@@ -1,6 +1,6 @@
 #!/bin/bash
 
-go build run.go 
+go build run.go  mylog.go
 [ $? -ne 0 ] && exit 1 
 
 go build uploadCadvisorData.go pushDatas.go mylog.go getDatas.go dataFunc.go

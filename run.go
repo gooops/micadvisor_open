@@ -44,10 +44,11 @@ func main() {
 	}()
 
 	for {
-		time.Sleep(time.Second * 120)
+		time.Sleep(time.Second * 240)
 		if isAlive() {
 			clean()
 		} else {
+                  LogErr(nil,"check uploadCadvisroData fail")
 			os.Exit(1)
 		}
 	}
